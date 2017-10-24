@@ -1,0 +1,88 @@
+#include <ESP8266WiFi.h>
+#include <WiFiClient.h>
+#include <ESP8266WebServer.h>
+
+//const char* ssid = "HP-setup-south";
+//const char* password = "detkinlabsouth101999";
+
+const char* ssid = "hp-setup-1";
+const char* password = "WelcomeHal";
+
+String str = "0/0/0/0/0/0";
+int posted = 1;
+
+ESP8266WebServer server(80);
+
+String webString = "";   // String to display
+
+// Generally, you should use "unsigned long" for variables that hold time
+unsigned long previousMillis = 0;        // will store last temp was read
+const long interval = 2000;              // interval at which to read sensor
+
+void handle_root() {
+  server.send(200, "text/plain", "Hello from the weather esp8266, read from /controls ");
+  delay(100);
+}
+
+static int i = 0;
+void setup(void)
+{
+  // You can open the Arduino IDE Serial Monitor window to see what the code is doing
+  Serial.begin(115200);  // Serial connection from ESP-01 via 3.3v console cable
+
+  // Connect to WiFi network
+  WiFi.begin(ssid, password);
+  Serial.print("\n\r \n\rWorking to connect");
+
+  // Wait for connection
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+
+  Serial.print("Connected to ");
+  Serial.println(ssid);
+  Serial.print("IP address: ");
+  Serial.println(WiFi.localIP());
+  
+  server.on("/", handle_root);
+
+  server.on("/settings", []() { // if you add this subdirectory to your webserver call, you get text below :)
+
+    webString = "<p>"+ str +"/"+ String(i)+ "</p>"; 
+    server.send(200, "text/plain", webString);            // send to someones browser when asked
+  });
+
+  server.begin();
+  Serial.println("HTTP server started");
+}
+  
+void loop(void)
+{
+   server.handleClient();
+   //server.println(String("Refresh: 5\r\n"));
+   read_serial();
+   if(posted == 0){
+      update_pos();
+   }
+ }
+
+void read_serial(){
+  if(Serial.available() > 0)
+  {
+      str = Serial.readStringUntil('\n');
+      posted = 0;
+  }
+}
+
+void update_pos(){
+  i += 1;
+  server.on("/settings", []() { // if you add this subdirectory to your webserver call, you get text below :)
+
+    webString = "<p>"+ str +"/"+ String(i)+ "</p>"; 
+    server.send(200, "text/plain", webString);            // send to someones browser when asked
+  });
+  posted=1;
+  delay(2000);
+  
+}

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#82172B"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context="ese350.wizardchess.MainActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#000000"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="wrap_content"
+        android:layout_height="224dp"
+        android:adjustViewBounds="false"
+        android:cropToPadding="false"
+        android:scaleType="fitCenter"
+        app:srcCompat="@drawable/wizardchess" />
+
+    <EditText
+        android:id="@+id/piece"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Piece"
+        android:imeOptions="actionUnspecified" />
+    <EditText
+        android:id="@+id/loc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Destination"
+        android:imeOptions="actionUnspecified" />
+    <Button
+        android:id="@+id/submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#d3a625"
+        android:text="Submit Request"
+        android:layout_marginBottom="60dp" />
+</LinearLayout>
